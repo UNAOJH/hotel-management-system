@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.info.mapper.RoomInfoMapper">
+    
+    <resultMap type="RoomInfo" id="RoomInfoResult">
+        <result property="id"    column="id"    />
+        <result property="roomNumber"    column="room_number"    />
+        <result property="roomTypeId"    column="room_type_id"    />
+        <result property="status"    column="status"    />
+        <result property="floor"    column="floor"    />
+        <result property="description"    column="description"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRoomInfoVo">
+        select id, room_number, room_type_id, status, floor, description, create_time, update_time from room_info
+    </sql>
+
+    <select id="selectRoomInfoList" parameterType="RoomInfo" resultMap="RoomInfoResult">
+        <include refid="selectRoomInfoVo"/>
+        <where>  
+            <if test="roomNumber != null  and roomNumber != ''"> and room_number like concat('%', #{roomNumber}, '%')</if>
+            <if test="roomTypeId != null "> and room_type_id = #{roomTypeId}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="floor != null "> and floor = #{floor}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectRoomInfoById" parameterType="Long" resultMap="RoomInfoResult">
+        <include refid="selectRoomInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRoomInfo" parameterType="RoomInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into room_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomNumber != null and roomNumber != ''">room_number,</if>
+            <if test="roomTypeId != null">room_type_id,</if>
+            <if test="status != null">status,</if>
+            <if test="floor != null">floor,</if>
+            <if test="description != null">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomNumber != null and roomNumber != ''">#{roomNumber},</if>
+            <if test="roomTypeId != null">#{roomTypeId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="floor != null">#{floor},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoomInfo" parameterType="RoomInfo">
+        update room_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomNumber != null and roomNumber != ''">room_number = #{roomNumber},</if>
+            <if test="roomTypeId != null">room_type_id = #{roomTypeId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="floor != null">floor = #{floor},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoomInfoById" parameterType="Long">
+        delete from room_info where id = #{id}
+    </delete>
+
+    <delete id="deleteRoomInfoByIds" parameterType="String">
+        delete from room_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
