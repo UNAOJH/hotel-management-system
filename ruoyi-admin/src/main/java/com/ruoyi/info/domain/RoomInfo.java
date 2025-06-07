@@ -18,24 +18,24 @@ public class RoomInfo extends BaseEntity
     /** 房间ID */
     private Long id;
 
-    /** 房间编号 */
-    @Excel(name = "房间编号")
+    /** 房间号 */
+    @Excel(name = "房间号")
     private String roomNumber;
 
-    /** 所属房型ID */
-    @Excel(name = "所属房型ID")
+    /** 房型ID，关联room_type */
+    @Excel(name = "房型ID，关联room_type")
     private Long roomTypeId;
 
-    /** 房间状态（0空闲 1已预订 2入住中 3维修中） */
-    @Excel(name = "房间状态", readConverterExp = "0=空闲,1=已预订,2=入住中,3=维修中")
+    /** 房间状态，0空闲，1预订，2入住，3维修 */
+    @Excel(name = "房间状态，0空闲，1预订，2入住，3维修")
     private Long status;
 
     /** 楼层 */
     @Excel(name = "楼层")
     private Long floor;
 
-    /** 房间描述 */
-    @Excel(name = "房间描述")
+    /** 描述 */
+    @Excel(name = "描述")
     private String description;
 
     public void setId(Long id) 

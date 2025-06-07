@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.booking.mapper.BookingMapper">
+    
+    <resultMap type="Booking" id="BookingResult">
+        <result property="id"    column="id"    />
+        <result property="hotelUserId"    column="hotel_user_id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="bookingDate"    column="booking_date"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBookingVo">
+        select id, hotel_user_id, room_id, booking_date, start_date, end_date, status, create_time, update_time from booking
+    </sql>
+
+    <select id="selectBookingList" parameterType="Booking" resultMap="BookingResult">
+        <include refid="selectBookingVo"/>
+        <where>  
+            <if test="hotelUserId != null "> and hotel_user_id = #{hotelUserId}</if>
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="bookingDate != null "> and booking_date = #{bookingDate}</if>
+            <if test="startDate != null "> and start_date = #{startDate}</if>
+            <if test="endDate != null "> and end_date = #{endDate}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBookingById" parameterType="Long" resultMap="BookingResult">
+        <include refid="selectBookingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBooking" parameterType="Booking" useGeneratedKeys="true" keyProperty="id">
+        insert into booking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hotelUserId != null">hotel_user_id,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="bookingDate != null">booking_date,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hotelUserId != null">#{hotelUserId},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="bookingDate != null">#{bookingDate},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBooking" parameterType="Booking">
+        update booking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="hotelUserId != null">hotel_user_id = #{hotelUserId},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="bookingDate != null">booking_date = #{bookingDate},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBookingById" parameterType="Long">
+        delete from booking where id = #{id}
+    </delete>
+
+    <delete id="deleteBookingByIds" parameterType="String">
+        delete from booking where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
