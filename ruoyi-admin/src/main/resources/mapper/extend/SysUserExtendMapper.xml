@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.extend.mapper.SysUserExtendMapper">
+    
+    <resultMap type="SysUserExtend" id="SysUserExtendResult">
+        <result property="userId"    column="user_id"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="customerType"    column="customer_type"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysUserExtendVo">
+        select user_id, id_card, customer_type, remark from sys_user_extend
+    </sql>
+
+    <select id="selectSysUserExtendList" parameterType="SysUserExtend" resultMap="SysUserExtendResult">
+        <include refid="selectSysUserExtendVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="idCard != null  and idCard != ''"> and id_card = #{idCard}</if>
+            <if test="customerType != null  and customerType != ''"> and customer_type = #{customerType}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysUserExtendByUserId" parameterType="Long" resultMap="SysUserExtendResult">
+        <include refid="selectSysUserExtendVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertSysUserExtend" parameterType="SysUserExtend">
+        insert into sys_user_extend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="customerType != null">customer_type,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="customerType != null">#{customerType},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysUserExtend" parameterType="SysUserExtend">
+        update sys_user_extend
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="customerType != null">customer_type = #{customerType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteSysUserExtendByUserId" parameterType="Long">
+        delete from sys_user_extend where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteSysUserExtendByUserIds" parameterType="String">
+        delete from sys_user_extend where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

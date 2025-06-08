@@ -35,6 +35,9 @@ public class SysRegisterService
 
     @Autowired
     private RedisCache redisCache;
+//    @Autowired
+//    public String register(SysUser user);
+
 
     /**
      * 注册

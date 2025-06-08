@@ -7,7 +7,7 @@ import com.ruoyi.info.domain.RoomInfo;
  * 客房信息Service接口
  * 
  * @author ruoyi
- * @date 2025-06-07
+ * @date 2025-06-08
  */
 public interface IRoomInfoService 
 {

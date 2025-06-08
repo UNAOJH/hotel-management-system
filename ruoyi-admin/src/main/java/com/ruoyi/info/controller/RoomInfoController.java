@@ -25,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 客房信息Controller
  * 
  * @author ruoyi
- * @date 2025-06-07
+ * @date 2025-06-08
  */
 @RestController
 @RequestMapping("/info/info")

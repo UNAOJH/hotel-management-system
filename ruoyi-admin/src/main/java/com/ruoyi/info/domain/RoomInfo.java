@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 客房信息对象 room_info
  * 
  * @author ruoyi
- * @date 2025-06-07
+ * @date 2025-06-08
  */
 public class RoomInfo extends BaseEntity
 {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.reservation.mapper.ReservationMapper">
+    
+    <resultMap type="Reservation" id="ReservationResult">
+        <result property="id"    column="id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="reserveDate"    column="reserve_date"    />
+        <result property="reserveTime"    column="reserve_time"    />
+        <result property="reserved"    column="reserved"    />
+        <result property="reserverName"    column="reserver_name"    />
+        <result property="reserverPhone"    column="reserver_phone"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectReservationVo">
+        select id, room_id, reserve_date, reserve_time, reserved, reserver_name, reserver_phone, remark, create_time, update_time from biz_reservation
+    </sql>
+
+    <select id="selectReservationList" parameterType="Reservation" resultMap="ReservationResult">
+        <include refid="selectReservationVo"/>
+        <where>  
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="reserveDate != null "> and reserve_date = #{reserveDate}</if>
+            <if test="reserveTime != null  and reserveTime != ''"> and reserve_time = #{reserveTime}</if>
+            <if test="reserverName != null  and reserverName != ''"> and reserver_name like concat('%', #{reserverName}, '%')</if>
+            <if test="reserverPhone != null  and reserverPhone != ''"> and reserver_phone = #{reserverPhone}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+        </where>
+    </select>
+    
+    <select id="selectReservationById" parameterType="Long" resultMap="ReservationResult">
+        <include refid="selectReservationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertReservation" parameterType="Reservation" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_reservation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">room_id,</if>
+            <if test="reserveDate != null">reserve_date,</if>
+            <if test="reserveTime != null">reserve_time,</if>
+            <if test="reserved != null">reserved,</if>
+            <if test="reserverName != null and reserverName != ''">reserver_name,</if>
+            <if test="reserverPhone != null and reserverPhone != ''">reserver_phone,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="reserveDate != null">#{reserveDate},</if>
+            <if test="reserveTime != null">#{reserveTime},</if>
+            <if test="reserved != null">#{reserved},</if>
+            <if test="reserverName != null and reserverName != ''">#{reserverName},</if>
+            <if test="reserverPhone != null and reserverPhone != ''">#{reserverPhone},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateReservation" parameterType="Reservation">
+        update biz_reservation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="reserveDate != null">reserve_date = #{reserveDate},</if>
+            <if test="reserveTime != null">reserve_time = #{reserveTime},</if>
+            <if test="reserved != null">reserved = #{reserved},</if>
+            <if test="reserverName != null and reserverName != ''">reserver_name = #{reserverName},</if>
+            <if test="reserverPhone != null and reserverPhone != ''">reserver_phone = #{reserverPhone},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteReservationById" parameterType="Long">
+        delete from biz_reservation where id = #{id}
+    </delete>
+
+    <delete id="deleteReservationByIds" parameterType="String">
+        delete from biz_reservation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
